@@ -5,14 +5,13 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;  
 import org.w3c.dom.Element;  
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;  
+import java.util.PriorityQueue;  
 
 public class XMLParser {
-	public List<Process> processen;
+	public PriorityQueue<Process> processen;
 
 	public XMLParser() {
-		processen=new ArrayList<Process>();
+		processen=new PriorityQueue<Process>();
 	}
 
 	public void leesProcessen(int aantalProcessen) {
