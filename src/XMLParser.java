@@ -10,6 +10,14 @@ import java.util.PriorityQueue;
 public class XMLParser {
 	public PriorityQueue<Process> processen;
 
+	public PriorityQueue<Process> getProcessen() {
+		return processen;
+	}
+
+	public void setProcessen(PriorityQueue<Process> processen) {
+		this.processen = processen;
+	}
+
 	public XMLParser() {
 		processen=new PriorityQueue<Process>();
 	}
@@ -27,7 +35,6 @@ public class XMLParser {
 			NodeList nodeList = doc.getElementsByTagName("process");  
 			for (int itr = 0; itr < nodeList.getLength(); itr++) {  
 				Node node = nodeList.item(itr);  
-				System.out.println("\nNode Name :" + node.getNodeName());  
 				if (node.getNodeType() == Node.ELEMENT_NODE)   {  
 					Element eElement = (Element) node;  
 					int id=Integer.parseInt(eElement.getElementsByTagName("pid").item(0).getTextContent());	

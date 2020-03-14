@@ -1,5 +1,6 @@
+import java.util.PriorityQueue;
 
-public class Scheduler {
+public abstract class Scheduler {
 	double gemOmlooptijd;
 	double gemNormOmlooptijd;
 	double gemWachttijd;
@@ -9,4 +10,6 @@ public class Scheduler {
 		gemNormOmlooptijd=0;
 		gemWachttijd=0;
 	}
+	
+	public abstract PriorityQueue<Process> schedule(PriorityQueue<Process> processen);
 }
