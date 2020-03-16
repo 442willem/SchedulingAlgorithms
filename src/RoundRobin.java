@@ -1,46 +1,54 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class RoundRobin extends Scheduler{
 	int timeSlice;
-	
+
 	public RoundRobin(int i) {
 		timeSlice=i;
 	}
 
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
-		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
+		LinkedList<Process> queue = new LinkedList<Process>();
+
+		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();	
 		int huidigeTijd=0;
-		while(!processen.isEmpty()) {
-			Process tijdelijk= processen.poll();
-			if(tijdelijk.getArrivalTime()>huidigeTijd)huidigeTijd=tijdelijk.getArrivalTime();			
-			
-			tijdelijk.setStartTijd(huidigeTijd);
-			int serviceTime=tijdelijk.getServiceTime();
-			if(timeSlice<serviceTime) {
-				tijdelijk.verminder(timeSlice);;
-				huidigeTijd+=timeSlice;
-				processen.add(tijdelijk);
-			}
-			else {
-				huidigeTijd+=serviceTime;
-				tijdelijk.setEndTijd(huidigeTijd);
-				tijdelijk.rekenUit();
-				scheduled.add(tijdelijk);
+		while(!queue.isEmpty()||!processen.isEmpty()) {
+			while(!processen.isEmpty()&&huidigeTijd>=processen.peek().arrivalTime)queue.add(processen.poll());			
+
+			if(queue.isEmpty()&&!processen.isEmpty())huidigeTijd++;
+			else{
+				Process tijdelijk= queue.removeFirst();
+
+				if(tijdelijk.getArrivalTime()>huidigeTijd)huidigeTijd=tijdelijk.getArrivalTime();			
+				if(tijdelijk.getStartTijd()==-1)tijdelijk.setStartTijd(huidigeTijd);
+
+				if(timeSlice<tijdelijk.getResterendeServiceTime()) {
+					tijdelijk.setResterendeServiceTime(tijdelijk.getResterendeServiceTime()-timeSlice);
+					huidigeTijd+=timeSlice;
+					queue.addLast(tijdelijk);
+				}
+				else {
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
+					tijdelijk.setEndTijd(huidigeTijd);
+					tijdelijk.rekenUit();
+					scheduled.add(tijdelijk);
+				}
 			}
 		}
-		
+
 		//berekening statistieken
-				for(Process p:scheduled) {
-					gemWachttijd+=p.getWachtTijd();
-					gemOmlooptijd+=p.getOmloopTijd();
-					gemNormOmlooptijd+=p.getNormOmloopTijd();
-				}
-				gemWachttijd/=scheduled.size();
-				gemOmlooptijd/=scheduled.size();
-				gemNormOmlooptijd/=scheduled.size();		
-				return scheduled;
+		for(Process p:scheduled) {
+			if (p.getId()<10) System.out.println(p.getWachtTijd()+" "+p.getOmloopTijd()+" "+p.getNormOmloopTijd());
+			gemWachttijd+=p.getWachtTijd();
+			gemOmlooptijd+=p.getOmloopTijd();
+			gemNormOmlooptijd+=p.getNormOmloopTijd();
+		}
+		gemWachttijd/=scheduled.size();
+		gemOmlooptijd/=scheduled.size();
+		gemNormOmlooptijd/=scheduled.size();		
+		return scheduled;
 	}
 
 }

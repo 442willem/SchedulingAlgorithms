@@ -6,7 +6,9 @@ public class Process implements Cloneable, Comparable<Object>{
 	
 	int startTijd;
 	int endTijd;
-	
+	int resterendeServiceTime;
+
+
 	int omloopTijd;
 	int normOmloopTijd;
 	int wachtTijd;
@@ -50,6 +52,14 @@ public class Process implements Cloneable, Comparable<Object>{
 	public void setEndTijd(int endTijd) {
 		this.endTijd = endTijd;
 	}
+	
+	public int getResterendeServiceTime() {
+		return resterendeServiceTime;
+	}
+
+	public void setResterendeServiceTime(int resterendServiceTime) {
+		this.resterendeServiceTime = resterendServiceTime;
+	}
 
 	public int getOmloopTijd() {
 		return omloopTijd;
@@ -80,7 +90,7 @@ public class Process implements Cloneable, Comparable<Object>{
 	}
 
 	public Process(int i, int a, int s) {
-		id=i;arrivalTime=a;serviceTime=s;
+		id=i;arrivalTime=a;serviceTime=s;resterendeServiceTime=s;
 	}
 	public Process() {
 		id=0;arrivalTime=0;serviceTime=0;
@@ -91,6 +101,7 @@ public class Process implements Cloneable, Comparable<Object>{
 		this.serviceTime=p.serviceTime;
 		this.startTijd=p.startTijd;
 		this.endTijd=p.endTijd;
+		this.resterendeServiceTime=p.resterendeServiceTime;
 		this.normOmloopTijd=p.normOmloopTijd;
 		this.omloopTijd=p.omloopTijd;
 		this.wachtTijd=p.wachtTijd;

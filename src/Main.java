@@ -11,12 +11,51 @@ public class Main {
 		PriorityQueue<Process> processen=parser.getProcessen();
 		
 		Scheduler firstComeFirstServed = new FirstComeFirstServed();
-		firstComeFirstServed.schedule(processen);	
+		PriorityQueue<Process> hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		firstComeFirstServed.schedule(hulpProcessen);	
 		System.out.println("First Come First Served:");
 		System.out.println("	Gemiddelde wachtijd: " + firstComeFirstServed.gemWachttijd);
 		System.out.println("	Gemiddelde omlooptijd: " + firstComeFirstServed.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + firstComeFirstServed.gemNormOmlooptijd);
-
+		hulpProcessen.clear();
 			
+		Scheduler roundRobin2 = new RoundRobin(2);
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		roundRobin2.schedule(hulpProcessen);	
+		System.out.println("Round Robin(timeslice q=2):");
+		System.out.println("	Gemiddelde wachtijd: " + roundRobin2.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + roundRobin2.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin2.gemNormOmlooptijd);
+		hulpProcessen.clear();
+		
+		Scheduler roundRobin4 = new RoundRobin(4);
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		roundRobin4.schedule(hulpProcessen);
+		System.out.println("Round Robin(timeslice q=4):");
+		System.out.println("	Gemiddelde wachtijd: " + roundRobin4.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + roundRobin4.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin4.gemNormOmlooptijd);
+		hulpProcessen.clear();
+		
+		Scheduler roundRobin8 = new RoundRobin(8);
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		roundRobin8.schedule(hulpProcessen);
+		System.out.println("Round Robin(timeslice q=8):");
+		System.out.println("	Gemiddelde wachtijd: " + roundRobin8.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + roundRobin8.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin8.gemNormOmlooptijd);
+		hulpProcessen.clear();	
 	}
 }
