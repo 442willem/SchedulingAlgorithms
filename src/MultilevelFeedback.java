@@ -6,39 +6,62 @@ public class MultilevelFeedback extends Scheduler{
 
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
+
+		Queue<Process> queExtraHigh = new LinkedList<Process>();	//que met timeslice 5
+		Queue<Process> queHigh = new LinkedList<Process>();			//que met timeslice 10
+		Queue<Process> queAverage = new LinkedList<Process>();		//que met timeslice 15
+		Queue<Process> queLow = new LinkedList<Process>();			//que met timeslice 20
+		Queue<Process> queExtraLow = new LinkedList<Process>();		//que met timeslice 25
 		
-		Queue<Process> queExtraHigh = new LinkedList<Process>();	//que met timeslice 1
-		Queue<Process> queHigh = new LinkedList<Process>();			//que met timeslice 2
-		Queue<Process> queAverage = new LinkedList<Process>();		//que met timeslice 3
-		Queue<Process> queLow = new LinkedList<Process>();			//que met timeslice 4
-		Queue<Process> queExtraLow = new LinkedList<Process>();		//que met timeslice 5
+		Queue<Process> tussenLijst = new LinkedList<Process>();
 		
 		PriorityQueue<Process> result=new PriorityQueue<Process>();
-		
-		//alle processen toevoegen aan de eerste que
-		for(Process p: processen) {
-			queExtraHigh.add(new Process(p));
-		}
-		int huidigprocess=0;
-		int huidigeTijd=0;
-		while(!queExtraHigh.isEmpty()|| !queHigh.isEmpty()|| !queAverage.isEmpty()|| !queLow.isEmpty()|| !queExtraLow.isEmpty()) {
+
+		int EH=5;
+		int H=10;
+		int A=15;
+		int L=20;
+		int EL=25;
+
+		int huidigeTijd=1;
+		while(!processen.isEmpty() || !queExtraHigh.isEmpty()|| !queHigh.isEmpty()|| !queAverage.isEmpty()|| !queLow.isEmpty()|| !queExtraLow.isEmpty()) {
 			Process tijdelijk;
-			System.out.println(result.size());
-			System.out.println("EH: "+ queExtraHigh.size()+" H: "+queHigh.size()+" A: "+ queAverage.size()+" L: "+ queLow.size()+" EL: "+ queExtraLow.size());
+			
+			if(!processen.isEmpty()) {
+				for(Process p: processen) {
+					if(p.getArrivalTime()<=huidigeTijd) {
+						tussenLijst.add(p);
+						queExtraHigh.add(new Process(p));
+					}
+				}
+
+				for(Process p: tussenLijst) {
+					processen.remove(p);
+				}
+				tussenLijst.clear();
+			}
 			
 			//hoogste priority queue eerst leegmaken (timeslice = 1)
 			if(!queExtraHigh.isEmpty()) {
 				tijdelijk=queExtraHigh.poll();
+
 				tijdelijk.setStartTijd(huidigeTijd);
-				huidigeTijd+=1;
-				tijdelijk.verminder(1);
-				
+				if(tijdelijk.getResterendeServiceTime()>=EH) {
+					tijdelijk.verminder(EH);
+					huidigeTijd+=EH;
+				}
+				else {
+					int verschil = EH-tijdelijk.getResterendeServiceTime();
+					huidigeTijd+=verschil;
+					tijdelijk.verminder(EH);
+
+				}
 				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getResterendeServiceTime()>2) {
+				else if(tijdelijk.getResterendeServiceTime()>EH*2) {
 					queHigh.add(tijdelijk);
 				}
 				else {
@@ -47,23 +70,34 @@ public class MultilevelFeedback extends Scheduler{
 			}
 			//tweede hoogste priority queue leegmaken als eerste queue leeg is (timeslice = 2)
 			else if(!queHigh.isEmpty()) {
-				
+
 				tijdelijk=queHigh.poll();
+
 				tijdelijk.setStartTijd(huidigeTijd);
-				huidigeTijd+=2;
-				tijdelijk.verminder(2);
-				
+
+				if(tijdelijk.getResterendeServiceTime()>=H) {
+					tijdelijk.verminder(H);
+					huidigeTijd+=H;
+				}
+				else {
+					int verschil = H-tijdelijk.getResterendeServiceTime();
+					huidigeTijd+=verschil;
+					tijdelijk.verminder(H);
+
+				}
+
 				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getResterendeServiceTime()>4) {
+				else if(tijdelijk.getResterendeServiceTime()>H*2) {
 					queAverage.add(tijdelijk);
 				}
 				else {
 					queHigh.add(tijdelijk);
 				}
+
 			}
 			//middenste queue leegmaken als alle vorige queue's leeg zijn (timeslice = 3)
 			else if(!queAverage.isEmpty()) {
@@ -71,50 +105,78 @@ public class MultilevelFeedback extends Scheduler{
 				tijdelijk=queAverage.poll();
 				tijdelijk.setStartTijd(huidigeTijd);
 
-				huidigeTijd+=3;
-				tijdelijk.verminder(3);
+				if(tijdelijk.getResterendeServiceTime()>=A) {
+					tijdelijk.verminder(A);
+					huidigeTijd+=A;
+				}
+				else {
+					int verschil = A-tijdelijk.getResterendeServiceTime();
+					huidigeTijd+=verschil;
+					tijdelijk.verminder(A);
+
+				}
 
 				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getResterendeServiceTime()>6) {
+				else if(tijdelijk.getResterendeServiceTime()>A*2) {
 					queLow.add(tijdelijk);
 				}
 				else {
 					queAverage.add(tijdelijk);
 				}
+
 			}
 			//voorlaatste queue's leegmaken als alle vorige queue's leeg zijn (timeslice = 4)
 			else if(!queLow.isEmpty()) {
 
 				tijdelijk=queLow.poll();
+
 				tijdelijk.setStartTijd(huidigeTijd);
 
-				huidigeTijd+=4;
-				tijdelijk.verminder(4);
+				if(tijdelijk.getResterendeServiceTime()>=L) {
+					tijdelijk.verminder(L);
+					huidigeTijd+=L;
+				}
+				else {
+					int verschil = L-tijdelijk.getResterendeServiceTime();
+					huidigeTijd+=verschil;
+					tijdelijk.verminder(L);
+
+				}
 
 				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getResterendeServiceTime()>8) {
+				else if(tijdelijk.getResterendeServiceTime()>L*2) {
 					queExtraLow.add(tijdelijk);
 				}
 				else {
 					queLow.add(tijdelijk);
 				}
+
 			}
 			//laatste queue's leegmaken als alle vorige queue's leeg zijn (timeslice = 5)
 			else if(!queExtraLow.isEmpty()) {
 
 				tijdelijk=queExtraLow.poll();
+
 				tijdelijk.setStartTijd(huidigeTijd);
 
-				huidigeTijd+=5;
-				tijdelijk.verminder(5);
+				if(tijdelijk.getResterendeServiceTime()>=EL) {
+					tijdelijk.verminder(EL);
+					huidigeTijd+=EL;
+				}
+				else {
+					int verschil = EL-tijdelijk.getResterendeServiceTime();
+					huidigeTijd+=verschil;
+					tijdelijk.verminder(EL);
+
+				}
 
 				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
@@ -125,8 +187,9 @@ public class MultilevelFeedback extends Scheduler{
 					queExtraLow.add(tijdelijk);
 				}
 			}
+			else huidigeTijd++;
 		}
-		
+
 		for(Process p:result) {
 			gemWachttijd+=p.getWachtTijd();
 			gemOmlooptijd+=p.getOmloopTijd();

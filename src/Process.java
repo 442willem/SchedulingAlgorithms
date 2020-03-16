@@ -86,7 +86,8 @@ public class Process implements Cloneable, Comparable<Object>{
 	}
 	
 	public void verminder(int tijd) {
-		resterendeServiceTime-=tijd;
+		if(resterendeServiceTime-tijd<=0)resterendeServiceTime=0;
+		else resterendeServiceTime-=tijd;
 	}
 
 	public Process(int i, int a, int s) {

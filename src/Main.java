@@ -96,5 +96,17 @@ public class Main {
 		System.out.println("	Gemiddelde omlooptijd: " + multilevelFeedback.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + multilevelFeedback.gemNormOmlooptijd);
 		hulpProcessen.clear();
+		
+		Scheduler multilevelFeedbackV2 = new MultilevelFeedbackV2();
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		multilevelFeedbackV2.schedule(hulpProcessen);	
+		System.out.println("Multilevel Feedback versie 2:");
+		System.out.println("	Gemiddelde wachtijd: " + multilevelFeedbackV2.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + multilevelFeedbackV2.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + multilevelFeedbackV2.gemNormOmlooptijd);
+		hulpProcessen.clear();
 	}
 }
