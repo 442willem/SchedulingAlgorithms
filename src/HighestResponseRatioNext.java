@@ -10,7 +10,7 @@ public class HighestResponseRatioNext extends Scheduler{
 		int huidigeTijd=0;
 		while (!processen.isEmpty()) {
 
-			Process tijdelijk=processen.peek();
+			Process tijdelijk=new Process(-1,-1,1000000);
 			int tijdelijkeTAT=-1;
 			for(Process p: processen) {
 				
@@ -18,22 +18,21 @@ public class HighestResponseRatioNext extends Scheduler{
 				if(wachten>0) {
 					int tat=(wachten-p.getServiceTime())/p.getServiceTime();
 					
-					if(tijdelijkeTAT<tat) {
+					if(tijdelijkeTAT<tat && p.getArrivalTime()<huidigeTijd) {
 						tijdelijkeTAT=tat;
 						tijdelijk=p;
 					}
 				}
 			}
-
-			processen.remove(tijdelijk);
-
-			if(tijdelijk.getArrivalTime()>huidigeTijd)huidigeTijd=tijdelijk.getArrivalTime();			
-
-			tijdelijk.setStartTijd(huidigeTijd);
-			huidigeTijd+=tijdelijk.getServiceTime();
-			tijdelijk.setEndTijd(huidigeTijd);
-			tijdelijk.rekenUit();
-			scheduled.add(tijdelijk);
+			if(tijdelijk.getArrivalTime()>0) {
+				processen.remove(tijdelijk);
+				tijdelijk.setStartTijd(huidigeTijd);
+				huidigeTijd+=tijdelijk.getServiceTime();
+				tijdelijk.setEndTijd(huidigeTijd);
+				tijdelijk.rekenUit();
+				scheduled.add(tijdelijk);
+			}
+			else huidigeTijd++;
 		}
 
 		//berekening statistieken

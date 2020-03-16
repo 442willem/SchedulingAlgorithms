@@ -59,7 +59,7 @@ public class Main {
 		System.out.println("	Gemiddelde omlooptijd: " + roundRobin8.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin8.gemNormOmlooptijd);
 		hulpProcessen.clear();	
-*/
+
 		Scheduler shortestJobFirst = new ShortestJobFirst();
 		hulpProcessen = new PriorityQueue<>();
 		for(Process p:processen) {
@@ -70,6 +70,18 @@ public class Main {
 		System.out.println("	Gemiddelde wachtijd: " + shortestJobFirst.gemWachttijd);
 		System.out.println("	Gemiddelde omlooptijd: " + shortestJobFirst.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + shortestJobFirst.gemNormOmlooptijd);
+		hulpProcessen.clear();*/
+		
+		Scheduler highestResponseRatioNext = new HighestResponseRatioNext();
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		highestResponseRatioNext.schedule(hulpProcessen);	
+		System.out.println("Highest Response Ratio Next:");
+		System.out.println("	Gemiddelde wachtijd: " + highestResponseRatioNext.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + highestResponseRatioNext.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + highestResponseRatioNext.gemNormOmlooptijd);
 		hulpProcessen.clear();
 	}
 }
