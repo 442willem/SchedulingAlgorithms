@@ -8,12 +8,14 @@ public class RoundRobin extends Scheduler{
 		timeSlice=i;
 	}
 
+
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
-		LinkedList<Process> queue = new LinkedList<Process>();
+		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
+		LinkedList<Process> queue =new LinkedList<>();
 
-		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();	
 		int huidigeTijd=0;
+
 		while(!queue.isEmpty()||!processen.isEmpty()) {
 			while(!processen.isEmpty()&&huidigeTijd>=processen.peek().arrivalTime)queue.add(processen.poll());			
 
@@ -35,20 +37,20 @@ public class RoundRobin extends Scheduler{
 					tijdelijk.rekenUit();
 					scheduled.add(tijdelijk);
 				}
-			}
-		}
 
-		//berekening statistieken
-		for(Process p:scheduled) {
-			if (p.getId()<10) System.out.println(p.getWachtTijd()+" "+p.getOmloopTijd()+" "+p.getNormOmloopTijd());
-			gemWachttijd+=p.getWachtTijd();
-			gemOmlooptijd+=p.getOmloopTijd();
-			gemNormOmlooptijd+=p.getNormOmloopTijd();
+				//berekening statistieken
+				for(Process p:scheduled) {
+					if (p.getId()<10) System.out.println(p.getWachtTijd()+" "+p.getOmloopTijd()+" "+p.getNormOmloopTijd());
+					gemWachttijd+=p.getWachtTijd();
+					gemOmlooptijd+=p.getOmloopTijd();
+					gemNormOmlooptijd+=p.getNormOmloopTijd();
+				}
+				gemWachttijd/=scheduled.size();
+				gemOmlooptijd/=scheduled.size();
+				gemNormOmlooptijd/=scheduled.size();		
+			}
+
 		}
-		gemWachttijd/=scheduled.size();
-		gemOmlooptijd/=scheduled.size();
-		gemNormOmlooptijd/=scheduled.size();		
 		return scheduled;
 	}
-
 }
