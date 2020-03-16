@@ -21,18 +21,20 @@ public class Main {
 		System.out.println("	Gemiddelde omlooptijd: " + firstComeFirstServed.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + firstComeFirstServed.gemNormOmlooptijd);
 		hulpProcessen.clear();
-			
+			/*
 		Scheduler roundRobin2 = new RoundRobin(2);
 		hulpProcessen = new PriorityQueue<>();
 		for(Process p:processen) {
 			hulpProcessen.add(new Process(p));
 		}
+		
 		roundRobin2.schedule(hulpProcessen);	
 		System.out.println("Round Robin(timeslice q=2):");
 		System.out.println("	Gemiddelde wachtijd: " + roundRobin2.gemWachttijd);
 		System.out.println("	Gemiddelde omlooptijd: " + roundRobin2.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin2.gemNormOmlooptijd);
 		hulpProcessen.clear();
+	
 		
 		Scheduler roundRobin4 = new RoundRobin(4);
 		hulpProcessen = new PriorityQueue<>();
@@ -57,5 +59,17 @@ public class Main {
 		System.out.println("	Gemiddelde omlooptijd: " + roundRobin8.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + roundRobin8.gemNormOmlooptijd);
 		hulpProcessen.clear();	
+*/
+		Scheduler shortestJobFirst = new ShortestJobFirst();
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		shortestJobFirst.schedule(hulpProcessen);	
+		System.out.println("Shortest Job First:");
+		System.out.println("	Gemiddelde wachtijd: " + shortestJobFirst.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + shortestJobFirst.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + shortestJobFirst.gemNormOmlooptijd);
+		hulpProcessen.clear();
 	}
 }

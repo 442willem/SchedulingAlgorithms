@@ -103,6 +103,9 @@ public class Process implements Cloneable, Comparable<Object>{
 		startTijd=-1;
 		}
 
+	public void schrijf() {
+		System.out.println("id:"+id+" arriv: "+arrivalTime+" serv: "+serviceTime);
+	}
 	public void rekenUit() {
 		wachtTijd=endTijd-arrivalTime-serviceTime;
 		omloopTijd=wachtTijd+serviceTime;
