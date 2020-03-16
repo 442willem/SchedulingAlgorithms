@@ -70,7 +70,7 @@ public class Main {
 		System.out.println("	Gemiddelde wachtijd: " + shortestJobFirst.gemWachttijd);
 		System.out.println("	Gemiddelde omlooptijd: " + shortestJobFirst.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + shortestJobFirst.gemNormOmlooptijd);
-		hulpProcessen.clear();*/
+		hulpProcessen.clear();
 		
 		Scheduler highestResponseRatioNext = new HighestResponseRatioNext();
 		hulpProcessen = new PriorityQueue<>();
@@ -82,6 +82,19 @@ public class Main {
 		System.out.println("	Gemiddelde wachtijd: " + highestResponseRatioNext.gemWachttijd);
 		System.out.println("	Gemiddelde omlooptijd: " + highestResponseRatioNext.gemOmlooptijd);
 		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + highestResponseRatioNext.gemNormOmlooptijd);
+		hulpProcessen.clear();
+		*/
+		
+		Scheduler multilevelFeedback = new MultilevelFeedback();
+		hulpProcessen = new PriorityQueue<>();
+		for(Process p:processen) {
+			hulpProcessen.add(new Process(p));
+		}
+		multilevelFeedback.schedule(hulpProcessen);	
+		System.out.println("Multilevel Feedback:");
+		System.out.println("	Gemiddelde wachtijd: " + multilevelFeedback.gemWachttijd);
+		System.out.println("	Gemiddelde omlooptijd: " + multilevelFeedback.gemOmlooptijd);
+		System.out.println("	Gemiddelde genormaliseerde omlooptijd: " + multilevelFeedback.gemNormOmlooptijd);
 		hulpProcessen.clear();
 	}
 }

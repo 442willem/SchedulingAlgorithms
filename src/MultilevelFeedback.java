@@ -19,9 +19,12 @@ public class MultilevelFeedback extends Scheduler{
 		for(Process p: processen) {
 			queExtraHigh.add(new Process(p));
 		}
+		int huidigprocess=0;
 		int huidigeTijd=0;
 		while(!queExtraHigh.isEmpty()|| !queHigh.isEmpty()|| !queAverage.isEmpty()|| !queLow.isEmpty()|| !queExtraLow.isEmpty()) {
-			Process tijdelijk=new Process();
+			Process tijdelijk;
+			System.out.println(result.size());
+			System.out.println("EH: "+ queExtraHigh.size()+" H: "+queHigh.size()+" A: "+ queAverage.size()+" L: "+ queLow.size()+" EL: "+ queExtraLow.size());
 			
 			//hoogste priority queue eerst leegmaken (timeslice = 1)
 			if(!queExtraHigh.isEmpty()) {
@@ -30,12 +33,12 @@ public class MultilevelFeedback extends Scheduler{
 				huidigeTijd+=1;
 				tijdelijk.verminder(1);
 				
-				if(tijdelijk.getServiceTime()==0) {
+				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getServiceTime()>2) {
+				else if(tijdelijk.getResterendeServiceTime()>2) {
 					queHigh.add(tijdelijk);
 				}
 				else {
@@ -50,12 +53,12 @@ public class MultilevelFeedback extends Scheduler{
 				huidigeTijd+=2;
 				tijdelijk.verminder(2);
 				
-				if(tijdelijk.getServiceTime()==0) {
+				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getServiceTime()>4) {
+				else if(tijdelijk.getResterendeServiceTime()>4) {
 					queAverage.add(tijdelijk);
 				}
 				else {
@@ -71,12 +74,12 @@ public class MultilevelFeedback extends Scheduler{
 				huidigeTijd+=3;
 				tijdelijk.verminder(3);
 
-				if(tijdelijk.getServiceTime()==0) {
+				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getServiceTime()>6) {
+				else if(tijdelijk.getResterendeServiceTime()>6) {
 					queLow.add(tijdelijk);
 				}
 				else {
@@ -92,12 +95,12 @@ public class MultilevelFeedback extends Scheduler{
 				huidigeTijd+=4;
 				tijdelijk.verminder(4);
 
-				if(tijdelijk.getServiceTime()==0) {
+				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
 				}
-				else if(tijdelijk.getServiceTime()>8) {
+				else if(tijdelijk.getResterendeServiceTime()>8) {
 					queExtraLow.add(tijdelijk);
 				}
 				else {
@@ -113,7 +116,7 @@ public class MultilevelFeedback extends Scheduler{
 				huidigeTijd+=5;
 				tijdelijk.verminder(5);
 
-				if(tijdelijk.getServiceTime()==0) {
+				if(tijdelijk.getResterendeServiceTime()==0) {
 					tijdelijk.setEndTijd(huidigeTijd);
 					tijdelijk.rekenUit();
 					result.add(tijdelijk);
