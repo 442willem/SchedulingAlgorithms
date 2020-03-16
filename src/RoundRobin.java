@@ -38,19 +38,20 @@ public class RoundRobin extends Scheduler{
 					scheduled.add(tijdelijk);
 				}
 
-				//berekening statistieken
-				for(Process p:scheduled) {
-					if (p.getId()<10) System.out.println(p.getWachtTijd()+" "+p.getOmloopTijd()+" "+p.getNormOmloopTijd());
-					gemWachttijd+=p.getWachtTijd();
-					gemOmlooptijd+=p.getOmloopTijd();
-					gemNormOmlooptijd+=p.getNormOmloopTijd();
-				}
-				gemWachttijd/=scheduled.size();
-				gemOmlooptijd/=scheduled.size();
-				gemNormOmlooptijd/=scheduled.size();		
+					
 			}
 
 		}
+		//berekening statistieken
+		for(Process p:scheduled) {
+			if (p.getId()<10) System.out.println(p.getWachtTijd()+" "+p.getOmloopTijd()+" "+p.getNormOmloopTijd());
+			gemWachttijd+=p.getWachtTijd();
+			gemOmlooptijd+=p.getOmloopTijd();
+			gemNormOmlooptijd+=p.getNormOmloopTijd();
+		}
+		gemWachttijd/=scheduled.size();
+		gemOmlooptijd/=scheduled.size();
+		gemNormOmlooptijd/=scheduled.size();	
 		return scheduled;
 	}
 }

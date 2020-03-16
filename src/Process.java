@@ -9,9 +9,9 @@ public class Process implements Cloneable, Comparable<Object>{
 	int resterendeServiceTime;
 
 
-	int omloopTijd;
-	int normOmloopTijd;
-	int wachtTijd;
+	double omloopTijd;
+	double normOmloopTijd;
+	double wachtTijd;
 	
 	public int getId() {
 		return id;
@@ -61,7 +61,7 @@ public class Process implements Cloneable, Comparable<Object>{
 		this.resterendeServiceTime = resterendServiceTime;
 	}
 
-	public int getOmloopTijd() {
+	public double getOmloopTijd() {
 		return omloopTijd;
 	}
 
@@ -69,7 +69,7 @@ public class Process implements Cloneable, Comparable<Object>{
 		this.omloopTijd = omloopTijd;
 	}
 
-	public int getNormOmloopTijd() {
+	public double getNormOmloopTijd() {
 		return normOmloopTijd;
 	}
 
@@ -77,7 +77,7 @@ public class Process implements Cloneable, Comparable<Object>{
 		this.normOmloopTijd = normOmloopTijd;
 	}
 
-	public int getWachtTijd() {
+	public double getWachtTijd() {
 		return wachtTijd;
 	}
 
@@ -95,20 +95,16 @@ public class Process implements Cloneable, Comparable<Object>{
 	public Process() {
 		id=0;arrivalTime=0;serviceTime=0;
 	}
-	public Process(Process p) {
-		this.id=p.id;
-		this.arrivalTime=p.arrivalTime;
-		this.serviceTime=p.serviceTime;
-		this.startTijd=p.startTijd;
-		this.endTijd=p.endTijd;
-		this.resterendeServiceTime=p.resterendeServiceTime;
-		this.normOmloopTijd=p.normOmloopTijd;
-		this.omloopTijd=p.omloopTijd;
-		this.wachtTijd=p.wachtTijd;
-	}
+	public Process(Process poll) {
+		id= poll.id;
+		arrivalTime=poll.arrivalTime;
+		serviceTime=poll.serviceTime;
+		resterendeServiceTime=poll.serviceTime;
+		startTijd=-1;
+		}
 
 	public void rekenUit() {
-		wachtTijd=startTijd-arrivalTime;
+		wachtTijd=endTijd-arrivalTime-serviceTime;
 		omloopTijd=wachtTijd+serviceTime;
 		normOmloopTijd=omloopTijd/serviceTime;
 	}	
