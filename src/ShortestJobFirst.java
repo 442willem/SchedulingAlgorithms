@@ -8,20 +8,18 @@ public class ShortestJobFirst extends Scheduler{
 		//scheduler
 		int huidigeTijd=0;
 		while (!processen.isEmpty()) {
-
-			Process tijdelijk=processen.peek();
-
+			
+			Process tijdelijk=new Process(-1,-1,100000000);
+			
 			for(Process p: processen) {
 				if(tijdelijk.getServiceTime()>p.getServiceTime() && p.getArrivalTime() <= huidigeTijd) {
-					tijdelijk=new Process(p);
-					System.out.println(tijdelijk);
+					tijdelijk=p;
 				}	
 			}
-			
+
 			processen.remove(tijdelijk);
 			tijdelijk.setStartTijd(huidigeTijd);
 			huidigeTijd+=tijdelijk.getServiceTime();
-
 			tijdelijk.setEndTijd(huidigeTijd);
 			tijdelijk.rekenUit();
 			scheduled.add(tijdelijk);
