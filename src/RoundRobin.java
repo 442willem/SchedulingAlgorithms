@@ -1,4 +1,5 @@
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class RoundRobin extends Scheduler{
 	int timeSlice;
@@ -10,7 +11,6 @@ public class RoundRobin extends Scheduler{
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
 		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
-		
 		int huidigeTijd=0;
 		while(!processen.isEmpty()) {
 			Process tijdelijk= processen.poll();
@@ -19,7 +19,7 @@ public class RoundRobin extends Scheduler{
 			tijdelijk.setStartTijd(huidigeTijd);
 			int serviceTime=tijdelijk.getServiceTime();
 			if(timeSlice<serviceTime) {
-				serviceTime-=timeSlice;
+				tijdelijk.verminder(timeSlice);;
 				huidigeTijd+=timeSlice;
 				processen.add(tijdelijk);
 			}

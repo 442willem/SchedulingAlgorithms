@@ -74,6 +74,10 @@ public class Process implements Cloneable, Comparable<Object>{
 	public void setWachtTijd(int wachtTijd) {
 		this.wachtTijd = wachtTijd;
 	}
+	
+	public void verminder(int tijd) {
+		serviceTime-=tijd;
+	}
 
 	public Process(int i, int a, int s) {
 		id=i;arrivalTime=a;serviceTime=s;
