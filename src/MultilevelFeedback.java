@@ -23,7 +23,7 @@ public class MultilevelFeedback extends Scheduler{
 		while(!queExtraHigh.isEmpty()|| !queHigh.isEmpty()|| !queAverage.isEmpty()|| !queLow.isEmpty()|| !queExtraLow.isEmpty()) {
 			Process tijdelijk=new Process();
 			
-			//hoogste priority que eerst leegmaken (timeslice = 1)
+			//hoogste priority queue eerst leegmaken (timeslice = 1)
 			if(!queExtraHigh.isEmpty()) {
 				tijdelijk=queExtraHigh.poll();
 				tijdelijk.setStartTijd(huidigeTijd);
@@ -42,7 +42,7 @@ public class MultilevelFeedback extends Scheduler{
 					queExtraHigh.add(tijdelijk);
 				}
 			}
-			//tweede hoogste priority que leegmaken als eerste leeg is (timeslice = 2)
+			//tweede hoogste priority queue leegmaken als eerste queue leeg is (timeslice = 2)
 			else if(!queHigh.isEmpty()) {
 				
 				tijdelijk=queHigh.poll();
@@ -62,6 +62,7 @@ public class MultilevelFeedback extends Scheduler{
 					queHigh.add(tijdelijk);
 				}
 			}
+			//middenste queue leegmaken als alle vorige queue's leeg zijn (timeslice = 3)
 			else if(!queAverage.isEmpty()) {
 
 				tijdelijk=queAverage.poll();
@@ -82,6 +83,7 @@ public class MultilevelFeedback extends Scheduler{
 					queAverage.add(tijdelijk);
 				}
 			}
+			//voorlaatste queue's leegmaken als alle vorige queue's leeg zijn (timeslice = 4)
 			else if(!queLow.isEmpty()) {
 
 				tijdelijk=queLow.poll();
@@ -102,6 +104,7 @@ public class MultilevelFeedback extends Scheduler{
 					queLow.add(tijdelijk);
 				}
 			}
+			//laatste queue's leegmaken als alle vorige queue's leeg zijn (timeslice = 5)
 			else if(!queExtraLow.isEmpty()) {
 
 				tijdelijk=queExtraLow.poll();
@@ -120,6 +123,7 @@ public class MultilevelFeedback extends Scheduler{
 				}
 			}
 		}
+		
 		for(Process p:result) {
 			gemWachttijd+=p.getWachtTijd();
 			gemOmlooptijd+=p.getOmloopTijd();

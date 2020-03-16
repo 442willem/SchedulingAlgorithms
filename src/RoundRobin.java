@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -11,9 +12,15 @@ public class RoundRobin extends Scheduler{
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
 		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
+		Queue<Process> proc =new LinkedList<>();
+		
+		for(Process p: processen) {
+			proc.add(new Process(p));
+		}
+		
 		int huidigeTijd=0;
 		while(!processen.isEmpty()) {
-			Process tijdelijk= processen.poll();
+			Process tijdelijk= proc.poll();
 			if(tijdelijk.getArrivalTime()>huidigeTijd)huidigeTijd=tijdelijk.getArrivalTime();			
 			
 			tijdelijk.setStartTijd(huidigeTijd);
@@ -21,7 +28,7 @@ public class RoundRobin extends Scheduler{
 			if(timeSlice<serviceTime) {
 				tijdelijk.verminder(timeSlice);;
 				huidigeTijd+=timeSlice;
-				processen.add(tijdelijk);
+				proc.add(tijdelijk);
 			}
 			else {
 				huidigeTijd+=serviceTime;
