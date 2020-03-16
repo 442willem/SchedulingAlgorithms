@@ -1,31 +1,44 @@
+import java.util.Comparator;
 import java.util.PriorityQueue;
+class SortByShortestRemainingTime implements Comparator<Process> { 
+	public int compare(Process a, Process b) 
+	{ 
+		return a.serviceTime - b.serviceTime; 
+	} 
+} 
 
 public class ShortestRemainingTime extends Scheduler{
 
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
-		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
 
+		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
 		//scheduler
+		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByShortestRemainingTime());
 		int huidigeTijd=0;
 		while (!processen.isEmpty()) {
-
-			Process tijdelijk=processen.peek();
-			for(Process p: processen) {
-				if(tijdelijk.getServiceTime()>p.getServiceTime()) {
-					tijdelijk=p;
-				}
+			
+			if(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
+				queue.add(processen.poll());
 			}
 
-			processen.remove(tijdelijk);
+			if(queue.size()!=0) {
+				Process tijdelijk=queue.poll();
+				int nextIR=tijdelijk.resterendeServiceTime;
+				if(!processen.isEmpty()&&processen.peek().arrivalTime<(tijdelijk.resterendeServiceTime+huidigeTijd))nextIR=processen.peek().arrivalTime-huidigeTijd;
 
-			if(tijdelijk.getArrivalTime()>huidigeTijd)huidigeTijd=tijdelijk.getArrivalTime();			
+				if(tijdelijk.getStartTijd()!=-1)tijdelijk.setStartTijd(huidigeTijd);
+				huidigeTijd+=nextIR;			
+				tijdelijk.resterendeServiceTime-=nextIR;
 
-			tijdelijk.setStartTijd(huidigeTijd);
-			huidigeTijd+=tijdelijk.getServiceTime();
-			tijdelijk.setEndTijd(huidigeTijd);
-			tijdelijk.rekenUit();
-			scheduled.add(tijdelijk);
+				if(tijdelijk.resterendeServiceTime==0) {
+					tijdelijk.setEndTijd(huidigeTijd);
+					tijdelijk.rekenUit();
+					scheduled.add(tijdelijk);
+				}
+				else queue.add(tijdelijk);
+			}
+			else huidigeTijd++;
 		}
 
 		//berekening statistieken
