@@ -1,31 +1,25 @@
+import java.util.Comparator;
 import java.util.PriorityQueue;
-
+class SortByHighestResponseRatio implements Comparator<Process> { 
+    public int compare(Process a, Process b) 
+    { 
+        return ((HighestResponseRatioNext.huidigeTijd-b.arrivalTime + b.serviceTime)/b.serviceTime) - ((HighestResponseRatioNext.huidigeTijd-a.arrivalTime + a.serviceTime)/a.serviceTime); 
+    } 
+} 
 public class HighestResponseRatioNext extends Scheduler{
-
+	public static int huidigeTijd;
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
 		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
-
 		//scheduler
-		int huidigeTijd=0;
+		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByHighestResponseRatio());
+		huidigeTijd=0;
 		while (!processen.isEmpty()) {
-
-			Process tijdelijk=new Process(-1,-1,1000000);
-			int tijdelijkeTAT=-1;
-			for(Process p: processen) {
-				
-				int wachten= huidigeTijd-p.getArrivalTime();
-				if(wachten>0) {
-					int tat=(wachten-p.getServiceTime())/p.getServiceTime();
-					
-					if(tijdelijkeTAT<tat && p.getArrivalTime()<huidigeTijd) {
-						tijdelijkeTAT=tat;
-						tijdelijk=p;
-					}
-				}
+			while(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
+				queue.add(processen.poll());
 			}
-			if(tijdelijk.getArrivalTime()>0) {
-				processen.remove(tijdelijk);
+			if(queue.size()!=0) {
+				Process tijdelijk=queue.poll();
 				tijdelijk.setStartTijd(huidigeTijd);
 				huidigeTijd+=tijdelijk.getServiceTime();
 				tijdelijk.setEndTijd(huidigeTijd);

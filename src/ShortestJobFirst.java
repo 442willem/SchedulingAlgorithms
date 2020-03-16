@@ -1,31 +1,35 @@
+import java.util.Comparator;
 import java.util.PriorityQueue;
+class SortByShortestJob implements Comparator<Process> { 
+    public int compare(Process a, Process b) 
+    { 
+        return a.serviceTime - b.serviceTime; 
+    } 
+} 
 
 public class ShortestJobFirst extends Scheduler{
 
 	@Override
 	public PriorityQueue<Process> schedule(PriorityQueue<Process> processen) {
+
 		PriorityQueue<Process> scheduled = new PriorityQueue<Process>();
 		//scheduler
+		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByShortestJob());
 		int huidigeTijd=0;
 		while (!processen.isEmpty()) {
-
-			Process tijdelijk=new Process(-1,-1,100000000);
-
-			for(Process p: processen) {
-				if(tijdelijk.getServiceTime()>p.getServiceTime() && p.getArrivalTime() <= huidigeTijd) {
-					tijdelijk=p;
-				}	
+			while(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
+				queue.add(processen.poll());
 			}
-			if(tijdelijk.arrivalTime>0) {
-				processen.remove(tijdelijk);
-				tijdelijk.setStartTijd(huidigeTijd);
-				huidigeTijd+=tijdelijk.getServiceTime();
-				tijdelijk.setEndTijd(huidigeTijd);
-				tijdelijk.rekenUit();
-				scheduled.add(tijdelijk);
+			
+			if(queue.size()!=0) {
+			Process tijdelijk=queue.poll();
+			tijdelijk.setStartTijd(huidigeTijd);
+			huidigeTijd+=tijdelijk.getServiceTime();
+			tijdelijk.setEndTijd(huidigeTijd);
+			tijdelijk.rekenUit();
+			scheduled.add(tijdelijk);
 			}
 			else huidigeTijd++;
-			
 		}
 
 		//berekening statistieken
