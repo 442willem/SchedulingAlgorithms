@@ -10,7 +10,7 @@ public class ShortestJobFirst extends Scheduler{
 				int huidigeTijd=0;
 				while (!processen.isEmpty()) {
 					
-					Process tijdelijk=processen.peek();
+					Process tijdelijk=new Process();
 					for(Process p: processen) {
 						if(tijdelijk.getServiceTime()>p.getServiceTime()) {
 							tijdelijk=p;
