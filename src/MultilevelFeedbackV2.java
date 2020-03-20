@@ -40,7 +40,6 @@ public class MultilevelFeedbackV2 extends Scheduler{
 				}
 				tussenLijst.clear();
 			}
-			
 			//hoogste priority queue eerst leegmaken (timeslice = 1)
 			if(!queExtraHigh.isEmpty()) {
 				tijdelijk=queExtraHigh.poll();
@@ -51,8 +50,7 @@ public class MultilevelFeedbackV2 extends Scheduler{
 					huidigeTijd+=EH;
 				}
 				else {
-					int verschil = EH-tijdelijk.getResterendeServiceTime();
-					huidigeTijd+=verschil;
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
 					tijdelijk.verminder(EH);
 
 				}
@@ -80,8 +78,7 @@ public class MultilevelFeedbackV2 extends Scheduler{
 					huidigeTijd+=H;
 				}
 				else {
-					int verschil = H-tijdelijk.getResterendeServiceTime();
-					huidigeTijd+=verschil;
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
 					tijdelijk.verminder(H);
 
 				}
@@ -110,8 +107,7 @@ public class MultilevelFeedbackV2 extends Scheduler{
 					huidigeTijd+=A;
 				}
 				else {
-					int verschil = A-tijdelijk.getResterendeServiceTime();
-					huidigeTijd+=verschil;
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
 					tijdelijk.verminder(A);
 
 				}
@@ -141,8 +137,7 @@ public class MultilevelFeedbackV2 extends Scheduler{
 					huidigeTijd+=L;
 				}
 				else {
-					int verschil = L-tijdelijk.getResterendeServiceTime();
-					huidigeTijd+=verschil;
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
 					tijdelijk.verminder(L);
 
 				}
@@ -172,8 +167,7 @@ public class MultilevelFeedbackV2 extends Scheduler{
 					huidigeTijd+=EL;
 				}
 				else {
-					int verschil = EL-tijdelijk.getResterendeServiceTime();
-					huidigeTijd+=verschil;
+					huidigeTijd+=tijdelijk.getResterendeServiceTime();
 					tijdelijk.verminder(EL);
 
 				}
