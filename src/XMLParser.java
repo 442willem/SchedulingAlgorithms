@@ -96,11 +96,15 @@ public class XMLParser {
 				process.appendChild(serviceTime);
 				// wachttijd element
 				Element waitTime = document.createElement("waitTime");
-				waitTime.appendChild(document.createTextNode(String.valueOf(p.getWachtTijd())));
+				String str=String.valueOf(p.getWachtTijd());
+				String str2 = str.replaceAll("\\.",",");
+				waitTime.appendChild(document.createTextNode(str2));
 				process.appendChild(waitTime);
 				// genormaliseerde omlooptijd element
 				Element normTAT = document.createElement("normTAT");
-				normTAT.appendChild(document.createTextNode(String.valueOf(p.getNormOmloopTijd())));
+				str=String.valueOf(p.getNormOmloopTijd());
+				str2 = str.replaceAll("\\.",",");
+				normTAT.appendChild(document.createTextNode(str2));
 				process.appendChild(normTAT);
 			}
 			// create the xml file
