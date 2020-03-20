@@ -14,7 +14,7 @@ public class HighestResponseRatioNext extends Scheduler{
 		//scheduler
 		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByHighestResponseRatio());
 		huidigeTijd=0;
-		while (!processen.isEmpty()) {
+		while (!processen.isEmpty()||!queue.isEmpty()) {
 			while(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
 				queue.add(processen.poll());
 			}

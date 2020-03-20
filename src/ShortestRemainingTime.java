@@ -16,7 +16,7 @@ public class ShortestRemainingTime extends Scheduler{
 		//scheduler
 		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByShortestRemainingTime());
 		int huidigeTijd=0;
-		while (!processen.isEmpty()) {
+		while (!processen.isEmpty()||!queue.isEmpty()) {
 			
 			if(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
 				queue.add(processen.poll());

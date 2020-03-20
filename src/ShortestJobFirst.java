@@ -16,12 +16,12 @@ public class ShortestJobFirst extends Scheduler{
 		//scheduler
 		PriorityQueue<Process> queue = new PriorityQueue<Process>(processen.size(), new SortByShortestJob());
 		int huidigeTijd=0;
-		while (!processen.isEmpty()) {
+		while (!processen.isEmpty()||!queue.isEmpty()) {
 			while(!processen.isEmpty()&&processen.peek().arrivalTime<=huidigeTijd) {
 				queue.add(processen.poll());
 			}
 			
-			if(queue.size()!=0) {
+			if(!queue.isEmpty()) {
 			Process tijdelijk=queue.poll();
 			tijdelijk.setStartTijd(huidigeTijd);
 			huidigeTijd+=tijdelijk.getServiceTime();
