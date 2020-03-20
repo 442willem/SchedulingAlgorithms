@@ -1,9 +1,11 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Process implements Cloneable, Comparable<Object>{
 	int id;
 	int arrivalTime;
 	int serviceTime;
-	
+
 	int startTijd;
 	int endTijd;
 	int resterendeServiceTime;
@@ -12,7 +14,7 @@ public class Process implements Cloneable, Comparable<Object>{
 	double omloopTijd;
 	double normOmloopTijd;
 	double wachtTijd;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -52,7 +54,7 @@ public class Process implements Cloneable, Comparable<Object>{
 	public void setEndTijd(int endTijd) {
 		this.endTijd = endTijd;
 	}
-	
+
 	public int getResterendeServiceTime() {
 		return resterendeServiceTime;
 	}
@@ -84,7 +86,7 @@ public class Process implements Cloneable, Comparable<Object>{
 	public void setWachtTijd(int wachtTijd) {
 		this.wachtTijd = wachtTijd;
 	}
-	
+
 	public void verminder(int tijd) {
 		if(resterendeServiceTime-tijd<=0)resterendeServiceTime=0;
 		else resterendeServiceTime-=tijd;
@@ -102,7 +104,7 @@ public class Process implements Cloneable, Comparable<Object>{
 		serviceTime=poll.serviceTime;
 		resterendeServiceTime=poll.serviceTime;
 		startTijd=-1;
-		}
+	}
 
 	public void schrijf() {
 		System.out.println("id:"+id+" arriv: "+arrivalTime+" serv: "+serviceTime);
@@ -110,27 +112,33 @@ public class Process implements Cloneable, Comparable<Object>{
 	public void rekenUit() {
 		wachtTijd=endTijd-arrivalTime-serviceTime;
 		omloopTijd=wachtTijd+serviceTime;
-		normOmloopTijd=omloopTijd/serviceTime;
+		normOmloopTijd=round(omloopTijd/serviceTime,5);
 	}	
-	
-    // Nodig mits gebruik PriorityQueue
-    @Override
-    public int compareTo(Object o) {
-        Process p = (Process) o;
-        return this.arrivalTime < p.arrivalTime ? -1 : 1;
-    }
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        Process cloned = new Process();
-        cloned.id = this.id;
-        cloned.arrivalTime = this.arrivalTime;
-        cloned.serviceTime = this.serviceTime;
-        cloned.startTijd = this.startTijd;
-        cloned.endTijd = this.endTijd;
-        cloned.omloopTijd = this.omloopTijd;
-        cloned.normOmloopTijd = this.normOmloopTijd;
-        cloned.wachtTijd = this.wachtTijd;
-        return cloned;
-    }
-}
+	// Nodig mits gebruik PriorityQueue
+	@Override
+	public int compareTo(Object o) {
+		Process p = (Process) o;
+		return this.arrivalTime < p.arrivalTime ? -1 : 1;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Process cloned = new Process();
+		cloned.id = this.id;
+		cloned.arrivalTime = this.arrivalTime;
+		cloned.serviceTime = this.serviceTime;
+		cloned.startTijd = this.startTijd;
+		cloned.endTijd = this.endTijd;
+		cloned.omloopTijd = this.omloopTijd;
+		cloned.normOmloopTijd = this.normOmloopTijd;
+		cloned.wachtTijd = this.wachtTijd;
+		return cloned;
+	}
+	public static double round(double value, int places) {
+		if (places < 0) throw new IllegalArgumentException();
+
+		BigDecimal bd = BigDecimal.valueOf(value);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}}
