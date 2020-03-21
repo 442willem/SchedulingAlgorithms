@@ -17,11 +17,11 @@ public class MultilevelFeedbackV2 extends Scheduler{
 		
 		PriorityQueue<Process> result=new PriorityQueue<Process>();
 
-		int EH=20;
-		int H=40;
-		int A=60;
-		int L=80;
-		int EL=100;
+		int EH=10;
+		int H=10;
+		int A=10;
+		int L=10;
+		int EL=10;
 
 		int huidigeTijd=1;
 		while(!processen.isEmpty() || !queExtraHigh.isEmpty()|| !queHigh.isEmpty()|| !queAverage.isEmpty()|| !queLow.isEmpty()|| !queExtraLow.isEmpty()) {
